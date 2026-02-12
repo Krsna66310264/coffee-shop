@@ -1,6 +1,6 @@
 // services/Api.js
 import axios from 'axios'
-import { useAuthenStore } from '@/stores/authen'
+import { useAuthenStore } from '../stores/authen'
 
 export default () => {
     const authenStore = useAuthenStore()

@@ -14,6 +14,12 @@
             <p>รายละเอียด: <br>
                 <textarea v-model="menu.description" rows="4"></textarea>
             </p>
+            <p>สถานะ:
+                <select v-model="menu.status">
+                    <option value="available">Available</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+            </p>
             <p><button type="submit">สร้างเมนูใหม่</button></p>
         </form>
         <button @click="$router.back()">ยกเลิก</button>

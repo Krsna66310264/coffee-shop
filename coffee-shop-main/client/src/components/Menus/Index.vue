@@ -23,6 +23,7 @@
                 <div><strong>ราคา:</strong> {{ menu.price }} บาท</div>
                 <div><strong>ประเภท:</strong> {{ menu.type }}</div>
                 <div><strong>คำอธิบาย:</strong> {{ menu.description }}</div>
+                <div><strong>สถานะ:</strong> {{ menu.status }}</div>
 
                 <div class="button-group">
                     <button @click="navigateTo('/menu/' + menu.id)">ดูข้อมูลเมนู</button>

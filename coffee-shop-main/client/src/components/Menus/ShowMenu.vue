@@ -7,6 +7,7 @@
             <p><strong>ราคา:</strong> {{ menu.price }} บาท</p>
             <p><strong>ประเภท:</strong> {{ menu.type }}</p>
             <p><strong>รายละเอียด:</strong> {{ menu.description }}</p>
+            <p><strong>สถานะ:</strong> {{ menu.status }}</p>
         </div>
     </div>
 </template>

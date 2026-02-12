@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         price: DataTypes.INTEGER,
         type: DataTypes.STRING, // hot, iced, frappe
-        description: DataTypes.STRING
+        description: DataTypes.STRING,
+        status: DataTypes.STRING
     })
     return Coffee
 }
