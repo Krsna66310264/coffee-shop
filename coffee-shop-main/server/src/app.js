@@ -9,6 +9,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(passport.initialize())
+// กำหนดให้ folder 'public' เป็น static resource ที่เข้าถึงได้ผ่าน path '/assets'
+app.use('/assets', express.static('public'))
 
 require('./userPassport')
 // Import routes

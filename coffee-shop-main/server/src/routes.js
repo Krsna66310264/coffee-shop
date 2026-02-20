@@ -3,6 +3,10 @@ const UserAuthenController = require('./controllers/UserAuthenController')
 
 const isAuthenController = require('./controllers/isAuthenController')
 
+
+const UploadController = require('./controllers/UploadController') 
+const fileUploadMiddleware = require('../middleware/coffeeUpload') 
+
 module.exports = (app) => {
     // Login & Register routes (เพิ่มใหม่)
     app.post('/login', UserAuthenController.login)
@@ -16,4 +20,11 @@ module.exports = (app) => {
     app.post('/coffee', isAuthenController, CoffeeController.create)
     app.put('/coffee/:id', isAuthenController, CoffeeController.put)
     app.delete('/coffee/:id', isAuthenController, CoffeeController.remove)
+
+    // Route สำหรับ Upload โดยเฉพาะ
+    // logic: เรียก middleware ก่อน -> ถ้าผ่าน -> เรียก controller
+    app.post('/upload', fileUploadMiddleware, UploadController.upload)
+
+    // Delete File Route (เพิ่มใหม่)
+    app.post('/upload/delete', UploadController.deleteFile)
 }

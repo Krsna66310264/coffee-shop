@@ -1,8 +1,8 @@
-const { Coffee } = require('../models') // เรียกใช้ Model Coffee (ที่สร้างตาราง coffees ใน MySQL)
+const { Coffee } = require('../models') // เรียกใช้ Model Coffee
 
 module.exports = {
     // 1. ดึงเมนูทั้งหมด -> GET /drinks
-    async index (req, res) {
+    async index(req, res) {
         try {
             const coffees = await Coffee.findAll()
             res.send(coffees)
@@ -12,8 +12,14 @@ module.exports = {
     },
 
     // 2. สร้างเมนูใหม่ -> POST /drink
-    async create (req, res) {
+    async create(req, res) {
         try {
+            // ดักจับเผื่อกรณีมีการแนบไฟล์มาใน request เดียวกับการสร้างข้อมูล
+            if (req.file) {
+                req.body.image = req.file.filename
+            }
+
+            // Sequelize จะบันทึก req.body.image ลงฐานข้อมูลอัตโนมัติ (ถ้า Model รองรับ)
             const coffee = await Coffee.create(req.body)
             res.send(coffee.toJSON())
         } catch (err) {
@@ -22,11 +28,16 @@ module.exports = {
     },
 
     // 3. แก้ไขเมนู -> PUT /drink/:id
-    async put (req, res) {
+    async put(req, res) {
         try {
+            // ดักจับเผื่อกรณีมีการแนบไฟล์มาตอนแก้ไขข้อมูล
+            if (req.file) {
+                req.body.image = req.file.filename
+            }
+
             await Coffee.update(req.body, {
-                where: { 
-                    id: req.params.id // ปรับจาก coffeeId เป็น id ให้ตรงกับ routes.js
+                where: {
+                    id: req.params.id
                 }
             })
             res.send(req.body)
@@ -36,11 +47,11 @@ module.exports = {
     },
 
     // 4. ลบเมนู -> DELETE /drink/:id
-    async remove (req, res) {
+    async remove(req, res) {
         try {
             const coffee = await Coffee.findOne({
-                where: { 
-                    id: req.params.id // ปรับเป็น id
+                where: {
+                    id: req.params.id
                 }
             })
             if (!coffee) {
@@ -54,9 +65,9 @@ module.exports = {
     },
 
     // 5. ดูเมนูรายตัว -> GET /drink/:id
-    async show (req, res) {
+    async show(req, res) {
         try {
-            const coffee = await Coffee.findByPk(req.params.id) // ปรับเป็น id
+            const coffee = await Coffee.findByPk(req.params.id)
             if (!coffee) {
                 return res.status(404).send({ error: 'ไม่พบเมนูที่ระบุ' })
             }
@@ -64,5 +75,20 @@ module.exports = {
         } catch (err) {
             res.status(500).send({ error: 'หาข้อมูลไม่เจอ' })
         }
+    },
+
+    // 6. อัปโหลดรูปภาพ -> POST /upload (รวมเข้ามาไว้ใน exports เดียวกัน)
+    upload(req, res) {
+        // Controller ทำหน้าที่แค่ส่ง response เพราะ Middleware จัดการไฟล์เสร็จแล้ว
+        if (!req.file) {
+            return res.status(400).send({
+                error: 'No file uploaded or invalid file type.'
+            })
+        }
+
+        // ส่งชื่อไฟล์กลับไปให้ Client เพื่อบันทึกลง DB ต่อไป
+        res.json({
+            filename: req.file.filename
+        })
     }
 }
