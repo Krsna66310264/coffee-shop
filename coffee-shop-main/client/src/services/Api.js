@@ -5,7 +5,7 @@ export default () => {
   const authenStore = useAuthenStore()
 
   return axios.create({
-    baseURL: 'http://localhost:8081/',
+    baseURL: 'http://43.208.49.205:8081/',
     headers: {
       Authorization: `Bearer ${authenStore.token}`
     }
